@@ -1,0 +1,22 @@
+{
+  "name": "primeiros-passos-cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiasLuc/primeiros-passos-cypress.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiasLuc/primeiros-passos-cypress/issues"
+  },
+  "homepage": "https://github.com/DiasLuc/primeiros-passos-cypress#readme",
+  "devDependencies": {
+    "cypress": "^14.0.3"
+  }
+}
