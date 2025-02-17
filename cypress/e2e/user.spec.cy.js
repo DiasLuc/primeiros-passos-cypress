@@ -16,7 +16,10 @@ describe('Orange HRM Tests', () => {
     genericField: ".oxd-input--active",
     dateField: "[placeholder='yyyy-dd-mm']",
     dateCloseButton: ".--close",
-    submitButton: "[type='submit']"
+    submitButton: "[type='submit']",
+    dropdownArrow: ".oxd-select-text--arrow",
+    genderRadio: "[type='radio'][value='2']",
+    testField: "[options='']"
 
   }
   
@@ -37,7 +40,7 @@ describe('Orange HRM Tests', () => {
     cy.get(selectorsList.wrongCredentialAlert)
   })
 
-  it.only('User Info Update - Success', () => {
+  it('User Info Update - Success', () => {
     cy.visit('/auth/login')
     cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
     cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
@@ -56,5 +59,19 @@ describe('Orange HRM Tests', () => {
     cy.get(selectorsList.submitButton).eq(0).click()
     cy.get('body').should('contain', "Successfully Updated")
     cy.get('.oxd-toast-close')
+    cy.get(selectorsList.dropdownArrow).eq(0).click()
+    cy.contains("Senegalese").click()
+    cy.get(selectorsList.dropdownArrow).eq(1).click()
+    cy.get('.oxd-select-dropdown > :nth-child(4)').click()
+    cy.get(selectorsList.dateField).eq(1).clear().type('1802-10-09')
+    cy.get(selectorsList.dateCloseButton).click()
+    cy.get(selectorsList.genderRadio).click({force: true})
+    cy.get(selectorsList.submitButton).eq(0).click()
+    cy.get('body').should('contain', "Successfully Updated")
+    cy.get('.oxd-toast-close')
+    cy.get(selectorsList.dropdownArrow).eq(2).click()
+    cy.get('.oxd-select-dropdown > :nth-child(8)').click()
+    cy.get(selectorsList.testField).clear().type("TESTFIELD")
+    cy.get(selectorsList.submitButton).eq(1).click()
   })
 })
