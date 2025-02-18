@@ -1,15 +1,18 @@
 import userData from "../fixtures/users/userData.json"
+import LoginPage from "../pages/loginPage.js"
+import DashboardPage from "../pages/dashboardPage.js"
+import MenuPage from "../pages/menuPage.js"
+import MyInfoPage from "../pages/myInfoPage.js"
+
+const loginPage = new LoginPage()
+const dashboardPage = new DashboardPage()
+const menuPage = new MenuPage()
+const myInfoPage = new MyInfoPage()
 
 describe('Orange HRM Tests', () => {
   
   const selectorsList = {
-    usernameField: "[name='username']",
-    passwordField: "[name='password']",
-    loginButton: "[type='submit']",
-    sectionTitleBar: ".oxd-topbar-header-breadcrumb-module",
-    dashboardGrid: ".orangehrm-dashboard-grid",
-    wrongCredentialAlert: "[role='alert']",
-    myInfoButton: "[href='/web/index.php/pim/viewMyDetails']",
+    
     fNameField: "[name='firstName']",
     mNameField: "[name='middleName']",
     lNameField: "[name='lastName']",
@@ -24,30 +27,24 @@ describe('Orange HRM Tests', () => {
   }
   
   it('Login - Success', () => {
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
-    cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
-    cy.get(selectorsList.loginButton).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(selectorsList.dashboardGrid)
+    loginPage.accessLoginPage()
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
+    dashboardPage.checkInDashboard()
+    
   })
 
   it('Login - Fail', () => {
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameField).type(userData.userFail.username)
-    cy.get(selectorsList.passwordField).type(userData.userFail.password)
-    cy.get(selectorsList.loginButton).click()
-    cy.get(selectorsList.wrongCredentialAlert)
+    loginPage.accessLoginPage()
+    loginPage.loginWithUser(userData.userFail.username, userData.userFail.password)
+    cy.get(loginPage.selectorsList().wrongCredentialAlert)
   })
 
   it('User Info Update - Success', () => {
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameField).type(userData.userSuccess.username)
-    cy.get(selectorsList.passwordField).type(userData.userSuccess.password)
-    cy.get(selectorsList.loginButton).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(selectorsList.dashboardGrid)
-    cy.get(selectorsList.myInfoButton).click()
+    loginPage.accessLoginPage()
+    loginPage.loginWithUser(userData.userSuccess.username, userData.userSuccess.password)
+    dashboardPage.checkInDashboard()
+    menuPage.accessMyInfo()
+
     cy.get(selectorsList.fNameField).clear().type("FNameTest")
     cy.get(selectorsList.mNameField).clear().type("MNameTest")
     cy.get(selectorsList.lNameField).clear().type("LNameTest")
